@@ -2,4 +2,8 @@
 <resources>
     <string name="app_name">нмедиа</string>
     <string name="nmedia">НМедиа!</string>
+    <string name="post_author">автор поста</string>
+    <string name="posts_menu">меню поста</string>
+    <string name="button_to_share">поделиться</string>
+    <string name="likes_button">лайкнуть</string>
 </resources>
