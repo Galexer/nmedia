@@ -19,8 +19,17 @@ data class Post (
     val share : Int = 990,
         )
 
-@RequiresApi(Build.VERSION_CODES.N)
-fun counter (likes: Int) = CompactDecimalFormat.getInstance(Locale.US, CompactDecimalFormat.CompactStyle.SHORT).format(likes)
+fun counter (num: Int) = if(Build.VERSION.SDK_INT >= 24) {
+         CompactDecimalFormat.getInstance(Locale.US, CompactDecimalFormat.CompactStyle.SHORT).format(num)
+    } else {
+         when(num) {
+            in 0..999 -> num.toString()
+            in 1_000..9_999 -> "${String.format("%.1f", num/1000)}K"
+            in 10_000..999_999 -> "${(num / 1000)}K"
+            in 1_000_000..9_999_999 -> "${String.format("%.1f", num/1_000_000)}M"
+            else -> "too much"
+        }
+    }
 
 class MainActivity : AppCompatActivity() {
 
