@@ -56,8 +56,8 @@ class MainActivity : AppCompatActivity() {
             if (!post.likedByMe) {
                 likesButton.setImageResource(R.drawable.ic_baseline_favorite_border_24)
             }
-            likes.text = post.postLikes.toString()
-            shares.text = post.share.toString()
+            likes.text = counter(post.postLikes)
+            shares.text = counter(post.share)
 
             likesButton.setOnClickListener {
                 post = post.copy(likedByMe = !post.likedByMe)
