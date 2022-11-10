@@ -5,4 +5,9 @@
     <string name="posts_menu">posts menu</string>
     <string name="button_to_share">button to share</string>
     <string name="likes_button">likes button</string>
+    <string name="remove">remove</string>
+    <string name="hint">post text</string>
+    <string name="save">save</string>
+    <string name="empty_content">Empty post text is available</string>
+    <string name="edit">edit</string>
 </resources>
