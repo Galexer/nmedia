@@ -57,7 +57,7 @@ class MainActivity : AppCompatActivity() {
         viewModel.edited.observe(this) {
             if (it.id != 0L) {
                 binding.content.requestFocus()
-                AndroidUtils.showKeyboard(binding.content)
+                AndroidUtils.focusAndShowKeyboard(binding.content)
                 binding.close.visibility = View.VISIBLE
                 binding.content.setText(it.content)
             }
@@ -82,6 +82,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
         binding.close.setOnClickListener {
+            viewModel.edit(post = Post())
             binding.content.setText("")
             binding.content.clearFocus()
             AndroidUtils.hideKeyboard(it)
