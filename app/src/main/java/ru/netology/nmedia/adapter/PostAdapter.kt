@@ -4,22 +4,26 @@ import android.icu.text.CompactDecimalFormat
 import android.os.Build
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.appcompat.widget.PopupMenu
 import androidx.recyclerview.widget.*
 import ru.netology.nmedia.R
 import ru.netology.nmedia.databinding.CardPostBinding
 import ru.netology.nmedia.dto.Post
 import java.util.*
 
-typealias OnLikeListener = (Post) -> Unit
-typealias OnShareListener = (Post) -> Unit
+interface OnInteractionsListener {
+    fun onEdit(post: Post)
+    fun onRemove(post: Post)
+    fun onLike(post: Post)
+    fun onShare(post: Post)
+}
 
 class PostAdapter(
-    private val likeOnClickListener: OnLikeListener,
-    private val ShareOnClickListener: OnShareListener,
-): ListAdapter<Post, PostViewHolder>(PostItemCallBack()) {
+    private val onInteractionsListener: OnInteractionsListener
+) : ListAdapter<Post, PostViewHolder>(PostItemCallBack()) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PostViewHolder {
         val binding = CardPostBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return PostViewHolder(likeOnClickListener, ShareOnClickListener, binding)
+        return PostViewHolder(onInteractionsListener, binding)
     }
 
     override fun onBindViewHolder(holder: PostViewHolder, position: Int) {
@@ -28,11 +32,10 @@ class PostAdapter(
     }
 }
 
-class PostViewHolder (
-    private val likeOnClickListener: OnLikeListener,
-    private val ShareOnClickListener: OnShareListener,
+class PostViewHolder(
+    private val onInteractionsListener: OnInteractionsListener,
     private var binding: CardPostBinding
-        ) : RecyclerView.ViewHolder(binding.root) {
+) : RecyclerView.ViewHolder(binding.root) {
 
     fun bind(post: Post) {
         with(binding) {
@@ -47,23 +50,41 @@ class PostViewHolder (
             shares.text = counter(post.share)
 
             likesButton.setOnClickListener {
-                likeOnClickListener(post)
+                onInteractionsListener.onLike(post)
             }
             shareButton.setOnClickListener {
-                ShareOnClickListener(post)
+                onInteractionsListener.onShare(post)
+            }
+            menu.setOnClickListener {
+                PopupMenu(it.context, it).apply {
+                    inflate(R.menu.optoins_post)
+                    setOnMenuItemClickListener { item ->
+                        when (item.itemId) {
+                            R.id.remove -> {
+                                onInteractionsListener.onRemove(post)
+                                true
+                            }
+                            R.id.edit -> {
+                                onInteractionsListener.onEdit(post)
+                                true
+                            }
+                            else -> false
+                        }
+                    }
+                }.show()
             }
         }
     }
 }
 
-private fun counter (num: Int) = if(Build.VERSION.SDK_INT >= 24) {
+private fun counter(num: Int) = if (Build.VERSION.SDK_INT >= 24) {
     CompactDecimalFormat.getInstance(Locale.US, CompactDecimalFormat.CompactStyle.SHORT).format(num)
 } else {
-    when(num) {
+    when (num) {
         in 0..999 -> num.toString()
-        in 1_000..9_999 -> "${String.format("%.1f", num/1000)}K"
+        in 1_000..9_999 -> "${String.format("%.1f", num / 1000)}K"
         in 10_000..999_999 -> "${(num / 1000)}K"
-        in 1_000_000..9_999_999 -> "${String.format("%.1f", num/1_000_000)}M"
+        in 1_000_000..9_999_999 -> "${String.format("%.1f", num / 1_000_000)}M"
         else -> "too much"
     }
 }

@@ -6,4 +6,9 @@
     <string name="posts_menu">меню поста</string>
     <string name="button_to_share">поделиться</string>
     <string name="likes_button">лайкнуть</string>
+    <string name="remove">удалить</string>
+    <string name="hint">текст поста</string>
+    <string name="save">сохратить</string>
+    <string name="empty_content">текст поста не может быть пустым</string>
+    <string name="edit">добавить</string>
 </resources>
