@@ -11,4 +11,5 @@
     <string name="save">сохратить</string>
     <string name="empty_content">текст поста не может быть пустым</string>
     <string name="edit">добавить</string>
+    <string name="share_post">поделиться постом</string>
 </resources>
