@@ -64,7 +64,10 @@ class MainActivity : AppCompatActivity() {
         binding.posts.adapter = adapter
 
         val activityLauncher = registerForActivityResult(NewPostActivity.Contract) { text->
-            text ?: return@registerForActivityResult
+            if(text == null) {
+                viewModel.edit(post= Post())
+                return@registerForActivityResult
+            }
             viewModel.changeContentAndSave(text)
         }
 

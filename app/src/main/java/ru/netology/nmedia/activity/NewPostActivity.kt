@@ -15,7 +15,6 @@ class NewPostActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         val binding = ActivityNewPostBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        var url : String? = null
 
         val text = intent?.getStringExtra(Intent.EXTRA_TEXT)
         binding.content.setText(text)
