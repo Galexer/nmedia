@@ -20,6 +20,7 @@ class PostRepositoryInMemoryImpl : PostRepository {
             content = "Привет! Пост 2",
             published = "15.10.2022",
             likedByMe = false,
+            video = "https://www.youtube.com/watch?v=RNprUxOGUUw"
         )
     )
 

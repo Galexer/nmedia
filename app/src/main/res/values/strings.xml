@@ -10,4 +10,5 @@
     <string name="save">save</string>
     <string name="empty_content">Empty post text is available</string>
     <string name="edit">edit</string>
+    <string name="share_post">Share post</string>
 </resources>

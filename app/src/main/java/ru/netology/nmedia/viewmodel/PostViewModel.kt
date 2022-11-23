@@ -22,24 +22,31 @@ class PostViewModel : ViewModel() {
     fun like(id: Long) = repository.like(id)
     fun share(id: Long) = repository.share(id)
     fun remove(id: Long) = repository.remove(id)
-    fun changeContent(content: String) {
+    fun changeContentAndSave(content: String) {
         edited.value?.let {
             val text = content.trim()
             if (it.content == text) {
                 return
             }
-            edited.value = it.copy(content = text)
+            val url = if (content.contains("https://www.youtube.com/")) {
+                 "https://www.youtube.com/" + youtubeLinkTaker(content)
+            } else ""
+            edited.value?.let {
+                repository.save(it.copy(content = text, video = url))
+            }
+            edited.value = empty
         }
-    }
-
-    fun save() {
-        edited.value?.let {
-            repository.save(it)
-        }
-        edited.value = empty
     }
 
     fun edit(post: Post) {
         edited.value = post
+    }
+
+    fun youtubeLinkTaker(text: String): String {
+        val halfUrl = text.substringAfter("https://www.youtube.com/")
+        if (halfUrl.contains(" ")) {
+            return halfUrl.substringBefore(' ')
+        }
+        return halfUrl
     }
 }
