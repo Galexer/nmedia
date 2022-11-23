@@ -22,11 +22,30 @@ class PostRepositoryInFilesImpl(val context: Context) : PostRepository {
     init {
         val file = context.filesDir.resolve(fileName)
         if (file.exists()) {
-
+            try {
                 context.openFileInput(fileName).bufferedReader().use {
                     posts = gson.fromJson(it, type)
                     nextId = (posts.maxOfOrNull { it.id } ?: 0) + 1
                 }
+            } catch (rte: RuntimeException) {
+                posts = listOf(
+                    Post(
+                        id = -1,
+                        author = "Нетология",
+                        content = "Привет!",
+                        published = "15.10.2022",
+                        likedByMe = false,
+                    ),
+                    Post(
+                        id = -2,
+                        author = "Нетология",
+                        content = "Привет! Пост 2",
+                        published = "15.10.2022",
+                        likedByMe = false,
+                        video = "https://www.youtube.com/watch?v=RNprUxOGUUw"
+                    )
+                )
+            }
         } else {
             posts = listOf(
                 Post(
