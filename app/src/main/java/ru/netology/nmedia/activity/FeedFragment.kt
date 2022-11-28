@@ -67,14 +67,6 @@ class FeedFragment : Fragment() {
         })
         binding.posts.adapter = adapter
 
-//        val activityLauncher = registerForActivityResult(NewPostFragment.Contract) { text->
-//            if(text == null) {
-//                viewModel.edit(post= Post())
-//                return@registerForActivityResult
-//            }
-//            viewModel.changeContentAndSave(text)
-//        }
-
         viewModel.data.observe(viewLifecycleOwner) { posts ->
             val newPost = adapter.itemCount < posts.size
             adapter.submitList(posts) {

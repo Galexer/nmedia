@@ -13,6 +13,7 @@ import androidx.activity.result.contract.ActivityResultContract
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import ru.netology.nmedia.R
 import ru.netology.nmedia.databinding.FragmrntNewPostBinding
 import ru.netology.nmedia.utils.StringArg
 import ru.netology.nmedia.viewmodel.PostViewModel
@@ -31,11 +32,12 @@ class NewPostFragment : Fragment() {
         val text = binding.content.text.toString()
         if (text.isNotEmpty()) {
             binding.close.visibility = View.VISIBLE
-            binding.close.setOnClickListener {
-//                viewModel.changeContentAndSave(text)
-                binding.close.visibility = View.GONE
-                findNavController().navigateUp()
-            }
+        }
+
+        binding.close.setOnClickListener {
+            viewModel.clear()
+            binding.close.visibility = View.GONE
+            findNavController().navigate(R.id.feedFragment)
         }
 
         binding.ok.setOnClickListener {
