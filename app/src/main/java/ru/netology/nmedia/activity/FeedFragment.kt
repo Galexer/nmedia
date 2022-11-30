@@ -2,34 +2,34 @@ package ru.netology.nmedia
 
 import android.content.Intent
 import android.net.Uri
-import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
-import android.widget.Toast
-import androidx.activity.result.launch
-import ru.netology.nmedia.databinding.ActivityMainBinding
-import androidx.activity.viewModels
-import androidx.annotation.RequiresApi
-import androidx.core.view.isVisible
-import ru.netology.nmedia.activity.NewPostActivity
+import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.map
+import androidx.navigation.fragment.findNavController
+import ru.netology.nmedia.activity.NewPostFragment
+import ru.netology.nmedia.activity.NewPostFragment.Companion.textArg
 import ru.netology.nmedia.adapter.OnInteractionsListener
 import ru.netology.nmedia.adapter.PostAdapter
+import ru.netology.nmedia.databinding.CardPostBinding
+import ru.netology.nmedia.databinding.FragmentFeedBinding
 import ru.netology.nmedia.dto.Post
-import ru.netology.nmedia.utils.AndroidUtils
 import ru.netology.nmedia.viewmodel.PostViewModel
 
-class MainActivity : AppCompatActivity() {
+class FeedFragment : Fragment() {
 
-    private val viewModel: PostViewModel by viewModels()
+    private val viewModel by viewModels<PostViewModel>(ownerProducer = ::requireParentFragment)
 
-    lateinit var binding: ActivityMainBinding
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
 
-    @RequiresApi(Build.VERSION_CODES.N)
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+        val binding = FragmentFeedBinding.inflate(inflater, container, false)
         val adapter = PostAdapter(object : OnInteractionsListener {
             override fun onEdit(post: Post) {
                 viewModel.edit(post)
@@ -60,18 +60,14 @@ class MainActivity : AppCompatActivity() {
                 startActivity(intent)
             }
 
+            override fun onSee(post: Post) {
+                findNavController().navigate(R.id.action_feedFragment_to_onePostFragment,
+                    Bundle().apply { textArg =  post.id.toString()})            }
+
         })
         binding.posts.adapter = adapter
 
-        val activityLauncher = registerForActivityResult(NewPostActivity.Contract) { text->
-            if(text == null) {
-                viewModel.edit(post= Post())
-                return@registerForActivityResult
-            }
-            viewModel.changeContentAndSave(text)
-        }
-
-        viewModel.data.observe(this) { posts ->
+        viewModel.data.observe(viewLifecycleOwner) { posts ->
             val newPost = adapter.itemCount < posts.size
             adapter.submitList(posts) {
                 if (newPost) {
@@ -79,26 +75,21 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
-        viewModel.edited.observe(this) {
-            if (it.id != 0L) {
-                activityLauncher.launch(it.content)
+        viewModel.edited.observe(viewLifecycleOwner) { post->
+            if (post.id != 0L) {
+                findNavController().navigate(R.id.action_feedFragment_to_newPostFragment,
+                    Bundle().apply { textArg = post.content }
+                )
             }
             else {
                 return@observe
             }
         }
+
         binding.add.setOnClickListener {
-            activityLauncher.launch(null)
+            findNavController().navigate(R.id.action_feedFragment_to_newPostFragment)
         }
 
-
-
-//        binding.close.setOnClickListener {
-//            viewModel.edit(post = Post())
-//            binding.content.setText("")
-//            binding.content.clearFocus()
-//            AndroidUtils.hideKeyboard(it)
-//            binding.close.visibility = View.GONE
-//        }
+        return binding.root
     }
 }

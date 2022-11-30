@@ -52,4 +52,8 @@ class PostViewModel (application: Application) : AndroidViewModel(application) {
         }
         return halfUrl
     }
+
+    fun clear() {
+        edited.value = empty
+    }
 }
