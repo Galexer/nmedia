@@ -9,6 +9,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.addCallback
 import androidx.activity.result.contract.ActivityResultContract
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -28,6 +29,10 @@ class NewPostFragment : Fragment() {
 
         val binding = FragmrntNewPostBinding.inflate(inflater, container, false)
         arguments?.textArg?.let(binding.content::setText)
+        val draft = viewModel.getContent()
+        if (draft.isNotEmpty()) {
+            binding.content.setText(draft)
+        }
 
         val text = binding.content.text.toString()
         if (text.isNotEmpty()) {
@@ -47,6 +52,15 @@ class NewPostFragment : Fragment() {
             }
             findNavController().navigateUp()
         }
+
+        requireActivity().onBackPressedDispatcher.addCallback(this) {
+            val content = binding.content.text.toString()
+            if (content.isNotEmpty()) {
+                viewModel.chasContent(content)
+            }
+            findNavController().navigateUp()
+        }
+
         return binding.root
     }
 

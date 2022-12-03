@@ -99,6 +99,14 @@ class PostRepositoryInFilesImpl(val context: Context) : PostRepository {
         data.value = posts
     }
 
+    override fun saveContent(content: String) {
+        TODO("Not yet implemented")
+    }
+
+    override fun getContent(): String {
+        TODO("Not yet implemented")
+    }
+
     private fun sync() {
         context.openFileOutput(fileName, Context.MODE_PRIVATE).bufferedWriter().use {
             it.write(gson.toJson(posts))

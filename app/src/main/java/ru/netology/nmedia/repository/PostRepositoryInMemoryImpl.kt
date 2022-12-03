@@ -56,4 +56,12 @@ class PostRepositoryInMemoryImpl : PostRepository {
         }
         data.value = posts
     }
+
+    override fun saveContent(content: String) {
+        TODO("Not yet implemented")
+    }
+
+    override fun getContent(): String {
+        TODO("Not yet implemented")
+    }
 }
