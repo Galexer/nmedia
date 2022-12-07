@@ -12,4 +12,10 @@
     <string name="empty_content">текст поста не может быть пустым</string>
     <string name="edit">добавить</string>
     <string name="share_post">поделиться постом</string>
+    <string name="channel_remote_name">Уведомление сервера</string>
+    <string name="channel_remote_description">Уведомление  от сервера</string>
+    <string name="google_api_unavailable">google api недоступен</string>
+    <string name="notification_new_post">Пользователь %1$s опубликовал новый пост:</string>
+    <string name="notification_incorrect">неверное уведомление, пожалуйса, напигите разработчику</string>
+    <string name="notification_user_liked">Пользователь %1$s лайкнул %2$s пост</string>
 </resources>
