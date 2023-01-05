@@ -16,7 +16,7 @@ private var empty = Post(
     likedByMe = false,
 )
 
-class PostViewModel (application: Application) : AndroidViewModel(application) {
+class PostViewModel(application: Application) : AndroidViewModel(application) {
     //private val repository: PostRepository = PostRepositoryInFilesImpl(application)
     private val repository: PostRepository = PostRepositoryRoomImpl(
         AppDb.getInstance(context = application).postDao,
@@ -35,7 +35,7 @@ class PostViewModel (application: Application) : AndroidViewModel(application) {
                 return
             }
             val url = if (content.contains("https://www.youtube.com/")) {
-                 "https://www.youtube.com/" + youtubeLinkTaker(content)
+                "https://www.youtube.com/" + youtubeLinkTaker(content)
             } else ""
             edited.value?.let {
                 repository.save(it.copy(content = text, video = url))
@@ -63,6 +63,7 @@ class PostViewModel (application: Application) : AndroidViewModel(application) {
     fun chasContent(text: String) {
         repository.saveContent(text)
     }
+
     fun getContent(): String {
         return repository.getContent()
     }

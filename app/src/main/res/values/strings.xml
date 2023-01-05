@@ -11,4 +11,10 @@
     <string name="empty_content">Empty post text is available</string>
     <string name="edit">edit</string>
     <string name="share_post">Share post</string>
+    <string name="google_api_unavailable">Google Api unavailable</string>
+    <string name="notification_new_post">User %1$s published new Post: </string>
+    <string name="notification_user_liked">"User %1$s liked %2$s 's Post: "</string>
+    <string name="notification_incorrect">Server send unavailable notify, please write to the developer</string>
+    <string name="channel_remote_name">Server notification</string>
+    <string name="channel_remote_description">Notification from remote server</string>
 </resources>
